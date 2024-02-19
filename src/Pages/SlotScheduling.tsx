@@ -169,7 +169,7 @@ const SlotScheduling = () => {
               >
                 {eve
                   ? eveMood.find((eveMoods) => eveMoods.value === eve)?.label
-                  : "Select Day"}
+                  : "Select Mood"}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -183,7 +183,7 @@ const SlotScheduling = () => {
                       onSelect={(currentValue) => {
                         setEve(currentValue === eve ? "" : currentValue);
                         setOpenEve(false);
-                        handleEveChange();
+                        handleEveChange(currentValue);
                       }}
                     >
                       <Check

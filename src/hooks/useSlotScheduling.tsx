@@ -37,8 +37,17 @@ const useSlotScheduling = () => {
   };
 
   //! handling eve change
-  const handleEveChange = () => {
-    console.log("changed eve");
+  const handleEveChange = (filtereve: string) => {
+    const dayByFilteredSlots = slots.filter((slot) => {
+      if (filtereve == "evening") {
+        return slot.slotStartTime <= "23:59" && slot.slotStartTime > "18:00";
+      } else if (filtereve == "morning") {
+        return slot.slotStartTime >= "06:00" && slot.slotStartTime < "12:00";
+      } else if (filtereve == "afternoon") {
+        return slot.slotStartTime >= "12:00" && slot.slotStartTime < "18:00";
+      }
+    });
+    setFilteredSlots(dayByFilteredSlots);
   };
 
   return {
