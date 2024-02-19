@@ -243,7 +243,10 @@ const SlotScheduling = () => {
             );
         })}
         {filteredSlots.filter((item) => item.isAllocated == false).length ==
-          0 && <p className="text-center text-xl">No slots available</p>}
+          0 &&
+          user.role == "patient" && (
+            <p className="text-center text-xl">No slots available</p>
+          )}
       </motion.div>
     </div>
   );

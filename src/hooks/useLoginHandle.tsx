@@ -14,10 +14,9 @@ const useLoginHandle = () => {
     role: "patient",
   });
   const { setUserDetail } = useUserDetails();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    console.log(userDetails);
-
     // checking email and password is empty or not
     if (!userDetails.email || !userDetails.password) {
       toast("Enter email, password!", {
@@ -33,8 +32,7 @@ const useLoginHandle = () => {
       return;
     }
 
-    console.log(userDetails.role);
-
+    setLoading(true);
     try {
       const data = await axios.post(
         `https://slotschedulingflowbackend.onrender.com/api/${userDetails.role}/login`,
@@ -52,12 +50,14 @@ const useLoginHandle = () => {
       else navigate("/appointments");
 
       toast(data?.data?.message);
+      setLoading(false);
     } catch (error: Error | any) {
       console.log("error i handle login", error);
       toast(error?.response?.data?.message);
+      setLoading(false);
     }
   };
-  return { userDetails, setUserDetails, handleLogin };
+  return { userDetails, setUserDetails, handleLogin, loading };
 };
 
 export default useLoginHandle;

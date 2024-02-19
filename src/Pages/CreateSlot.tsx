@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 
-import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import useCreateSlot from "@/hooks/useCreateSlot";
@@ -101,7 +100,7 @@ const CreateSlot = () => {
           className="w-[22rem] sm:w-[23.5rem] flex items-center gap-2"
           disabled={loading}
         >
-          Create Slot <PlusCircle className="size-4 mt-[0.1rem]" />
+          {loading ? "Creating..." : `Create Slot`}
         </Button>
       </form>
     </div>

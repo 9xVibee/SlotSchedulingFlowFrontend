@@ -6,7 +6,8 @@ import useLoginHandle from "@/hooks/useLoginHandle";
 
 const Login = () => {
   // using custom hook use loginHandle
-  const { handleLogin, setUserDetails, userDetails } = useLoginHandle();
+  const { handleLogin, setUserDetails, userDetails, loading } =
+    useLoginHandle();
 
   return (
     <div className="w-full h-full pt-[1rem] flex justify-center items-center flex-col gap-8">
@@ -103,8 +104,12 @@ const Login = () => {
           </RadioGroup>
         </div>
 
-        <Button className="w-[20rem] mt-10" onClick={handleLogin}>
-          Login
+        <Button
+          className="w-[20rem] mt-10"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Login"}
         </Button>
       </div>
     </div>
