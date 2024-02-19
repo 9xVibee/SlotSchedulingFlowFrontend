@@ -4,8 +4,13 @@ import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import useCreateSlot from "@/hooks/useCreateSlot";
+import { useUserDetails } from "@/utils/store";
+import { useNavigate } from "react-router-dom";
 
 const CreateSlot = () => {
+  const { user } = useUserDetails();
+  const navigate = useNavigate();
+
   //! extracting date and time from custom hook
   const { handleCreateSlot, setDate, setTime, date, time, loading } =
     useCreateSlot();
@@ -38,6 +43,12 @@ const CreateSlot = () => {
       });
     }
   };
+
+  if (!user.role || user.role !== "physio") {
+    toast("Only physio are allowed here!");
+    navigate("/");
+    return;
+  }
 
   return (
     <div className="w-full h-full max-md:px-2 pt-[1rem] flex justify-center items-center flex-col gap-8">

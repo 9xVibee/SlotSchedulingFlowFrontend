@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Skeletons from "./Skeleton";
 import { useState } from "react";
+import { useUserDetails } from "@/utils/store";
 
 const Appointments = () => {
   const navigate = useNavigate();
   const [booked, setBooked] = useState(false);
+  const { user } = useUserDetails();
 
   const { loading, filteredSlots, getBookedSlots, getUnBookedSlots } =
     useBookUnBookSlots();
@@ -24,6 +26,13 @@ const Appointments = () => {
         position: "top-center",
       });
   };
+
+  // checking if the loged in user is physio or not!
+  if (user.role != "physio" || !user.role) {
+    navigate("/");
+    toast("Only physio can access this page");
+    return;
+  }
 
   return (
     <div className="w-full h-screen pt-[3rem] flex flex-col gap-8 max-md:px-2">

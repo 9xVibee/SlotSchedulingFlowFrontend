@@ -15,6 +15,8 @@ import AvailabelSlot from "@/components/AvailabelSlot";
 import Skeletons from "./Skeleton";
 import useSlotScheduling from "@/hooks/useSlotScheduling";
 import { useUserDetails } from "@/utils/store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const days = [
   {
@@ -64,6 +66,7 @@ const SlotScheduling = () => {
   const [day, setDay] = React.useState("");
   const [eve, setEve] = React.useState("");
   const { user } = useUserDetails();
+  const navigate = useNavigate();
 
   const {
     loading,
@@ -78,6 +81,12 @@ const SlotScheduling = () => {
     getAllSlots();
     if (user.role == "patient") unBookedSlots();
   }, []);
+
+  if (!user.role || user.role == "physio") {
+    navigate("/login");
+    toast("login to access this page and Physio cannot access this page");
+    return;
+  }
 
   return (
     <div className="w-full max-md:px-2 h-screen pt-[2.4rem] flex flex-col gap-10">
