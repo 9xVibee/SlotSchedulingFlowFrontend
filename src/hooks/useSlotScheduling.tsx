@@ -24,12 +24,6 @@ const useSlotScheduling = () => {
     }
   };
 
-  //! get all unbooked slots
-  const unBookedSlots = async () => {
-    const unBookedSlots = slots.filter((slot) => !slot.isAllocated);
-    setFilteredSlots(unBookedSlots);
-  };
-
   //! hanlding day change
   const handleDayChange = (day: string) => {
     const dayByFilteredSlots = slots.filter((slot) => slot.day == day);
@@ -54,7 +48,6 @@ const useSlotScheduling = () => {
     filteredSlots,
     loading,
     getAllSlots,
-    unBookedSlots,
     handleDayChange,
     handleEveChange,
   };

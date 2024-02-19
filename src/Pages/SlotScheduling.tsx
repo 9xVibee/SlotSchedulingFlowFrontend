@@ -72,14 +72,12 @@ const SlotScheduling = () => {
     loading,
     filteredSlots,
     getAllSlots,
-    unBookedSlots,
     handleDayChange,
     handleEveChange,
   } = useSlotScheduling();
 
   React.useEffect(() => {
     getAllSlots();
-    if (user.role == "patient") unBookedSlots();
   }, []);
 
   if (!user.role || user.role == "physio") {
@@ -229,6 +227,7 @@ const SlotScheduling = () => {
       >
         {filteredSlots.map((slot, idx) => {
           if (loading) return <Skeletons />;
+          else if (user.role == "patient" && slot.isAllocated) return null;
           else
             return (
               <AvailabelSlot
@@ -243,6 +242,8 @@ const SlotScheduling = () => {
               />
             );
         })}
+        {filteredSlots.filter((item) => item.isAllocated == false).length ==
+          0 && <p className="text-center text-xl">No slots available</p>}
       </motion.div>
     </div>
   );
