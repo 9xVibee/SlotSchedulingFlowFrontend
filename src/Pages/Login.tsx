@@ -36,7 +36,7 @@ const Login = () => {
           <input
             id="email"
             type="text"
-            className="py-1 rounded-sm w-[20rem] border outline-none px-2"
+            className="py-1 rounded-sm w-[20rem] border outline-none px-2 text-black"
             onChange={(e) => {
               setUserDetails({
                 ...userDetails,
@@ -53,7 +53,7 @@ const Login = () => {
           <input
             id="password"
             type="text"
-            className="py-1 px-2 rounded-sm w-[20rem] border outline-none"
+            className="py-1 px-2 rounded-sm w-[20rem] border outline-none text-black"
             onChange={(e) => {
               setUserDetails({
                 ...userDetails,
