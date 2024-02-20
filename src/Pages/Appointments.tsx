@@ -23,7 +23,8 @@ const Appointments = () => {
   const redirectThePhysio = () => {
     const curDate = new Date();
 
-    if (curDate.getDay() == 2) navigate("/createslot");
+    if (curDate.getDay() == 3 || curDate.getDay() == 4 || curDate.getDay() == 3)
+      navigate("/createslot");
     else
       toast("Slot can only be create on sunday", {
         position: "top-center",

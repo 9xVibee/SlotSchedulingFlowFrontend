@@ -19,7 +19,7 @@ const useBookUnBookSlots = () => {
         // "http://localhost:3000/api/physio/getallslots",
         "https://slotschedulingflowbackend.onrender.com/api/physio/getallslots",
         {
-          email: user.email || "",
+          email: user.email,
         }
       );
 
