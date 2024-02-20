@@ -1,108 +1,279 @@
-import { motion } from "framer-motion";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import useCreateSlot from "@/hooks/useCreateSlot";
-import { useUserDetails } from "@/utils/store";
-import { useNavigate } from "react-router-dom";
+type time = {
+  startTime: string;
+  endTime: string;
+};
+
+type SlotType = {
+  monday: time[];
+  tuesday: time[];
+  wednesday: time[];
+  thursday: time[];
+  friday: time[];
+  saturday: time[];
+};
+
+type typeofDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday";
+
+const days = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
 
 const CreateSlot = () => {
-  const { user } = useUserDetails();
-  const navigate = useNavigate();
+  const [slot, setSlot] = useState<SlotType>({
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<typeofDay>("monday");
+  const [selected, setSelected] = useState<time[]>(slot[selectedDay]);
+  const [defaultValue] = useState([
+    {
+      startTime: "09:00",
+      endTime: "09:45",
+    },
+    {
+      startTime: "09:15",
+      endTime: "10:00",
+    },
+    {
+      startTime: "09:30",
+      endTime: "10:15",
+    },
+    {
+      startTime: "09:45",
+      endTime: "10:30",
+    },
+    {
+      startTime: "10:00",
+      endTime: "10:45",
+    },
+    {
+      startTime: "10:15",
+      endTime: "11:00",
+    },
+    {
+      startTime: "10:30",
+      endTime: "11:15",
+    },
+    {
+      startTime: "10:45",
+      endTime: "11:30",
+    },
+    {
+      startTime: "11:00",
+      endTime: "11:45",
+    },
+    {
+      startTime: "11:15",
+      endTime: "12:00",
+    },
+    {
+      startTime: "11:30",
+      endTime: "12:15",
+    },
+    {
+      startTime: "11:45",
+      endTime: "12:30",
+    },
+    {
+      startTime: "12:00",
+      endTime: "12:45",
+    },
+    {
+      startTime: "12:15",
+      endTime: "13:00",
+    },
+    {
+      startTime: "12:30",
+      endTime: "13:15",
+    },
+    {
+      startTime: "12:45",
+      endTime: "13:30",
+    },
+    {
+      startTime: "13:00",
+      endTime: "13:45",
+    },
+    {
+      startTime: "13:15",
+      endTime: "14:00",
+    },
+    {
+      startTime: "13:30",
+      endTime: "14:15",
+    },
+    {
+      startTime: "13:45",
+      endTime: "14:30",
+    },
+    {
+      startTime: "14:00",
+      endTime: "14:45",
+    },
+    {
+      startTime: "14:15",
+      endTime: "15:00",
+    },
+    {
+      startTime: "14:30",
+      endTime: "15:15",
+    },
+    {
+      startTime: "14:45",
+      endTime: "15:30",
+    },
+    {
+      startTime: "15:00",
+      endTime: "15:45",
+    },
+    {
+      startTime: "15:15",
+      endTime: "16:00",
+    },
+    {
+      startTime: "15:30",
+      endTime: "16:15",
+    },
+    {
+      startTime: "15:45",
+      endTime: "16:30",
+    },
+    {
+      startTime: "16:00",
+      endTime: "16:45",
+    },
+    {
+      startTime: "16:15",
+      endTime: "17:00",
+    },
+    {
+      startTime: "16:30",
+      endTime: "17:15",
+    },
+    {
+      startTime: "16:45",
+      endTime: "17:30",
+    },
+    {
+      startTime: "17:00",
+      endTime: "17:45",
+    },
+    {
+      startTime: "17:15",
+      endTime: "18:00",
+    },
+  ]);
 
-  //! extracting date and time from custom hook
-  const { handleCreateSlot, setDate, setTime, date, time, loading } =
-    useCreateSlot();
+  //! adding/removing item from selected
+  const addItemToSelected = (item: time) => {
+    const isAlreadyExist = selected.findIndex((item2) => {
+      return item2.startTime == item.startTime;
+    });
 
-  //! checking if date is from same week or not
-  const handleDateChange = (date: string) => {
-    // Get the current date
-    const currentDate = new Date();
+    const arr = selected;
+    if (isAlreadyExist !== -1) {
+      arr.splice(isAlreadyExist, 1);
+      setSelected(arr);
+    } else setSelected([...selected, item]);
 
-    // Add 7 days to the current date
-    let futureDate = new Date(currentDate);
-    futureDate.setDate(currentDate.getDate() + 6);
-
-    if (futureDate.getDate() !== currentDate.getDate() + 6) {
-      futureDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      );
-    }
-
-    if (
-      Number(date.toString().slice(8)) > currentDate.getDate() &&
-      Number(date.toString().slice(8)) <= futureDate.getDate()
-    ) {
-      setDate(date);
-    } else {
-      toast("Select date between this week", {
-        duration: 1500,
-      });
-    }
+    setSlot({
+      ...slot,
+      [selectedDay]: [...slot[selectedDay], item],
+    });
   };
 
-  if (!user.role || user.role !== "physio") {
-    toast("Only physio are allowed here!");
-    navigate("/");
-    return;
-  }
+  //! handle submit
+  const handleSubmit = () => {
+    setLoading(true);
+  };
 
   return (
-    <div className="w-full h-full max-md:px-2 pt-[1rem] flex justify-center items-center flex-col gap-8">
-      <div className="w-full flex justify-center items-center py-2 overflow-y-hidden">
-        <motion.h1
-          initial={{
-            y: 100,
+    <div className="flex flex-col w-full h-full justify-center items-center gap-4">
+      <div>
+        <select
+          className="border text-xl capitalize font-medium text-black px-2 py-1 rounded-md bg-gray-200 shadow-lg outline-none"
+          onChange={(e) => {
+            if (
+              e.target.value == "monday" ||
+              e.target.value == "tuesday" ||
+              e.target.value == "wednesday" ||
+              e.target.value == "thursday" ||
+              e.target.value == "friday" ||
+              e.target.value == "saturday"
+            ) {
+              setSelectedDay(e.target.value);
+              setSelected(slot[e.target.value]);
+            }
           }}
-          animate={{
-            y: 0,
-          }}
-          transition={{
-            delay: 0.4,
-            duration: 0.8,
-            ease: "easeInOut",
-          }}
-          className="font-bold text-5xl md:text-6xl uppercase"
         >
-          Create Slot.
-        </motion.h1>
+          {days.map((item) => {
+            return <option key={item}>{item}</option>;
+          })}
+        </select>
       </div>
-      <form
-        onSubmit={(e) => {
-          handleCreateSlot(e);
-        }}
-        className="flex flex-col gap-8"
-      >
-        <div className="flex flex-col gap-2">
-          <label className="text-xl">Select the Date:</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => {
-              handleDateChange(e.target.value);
-            }}
-            className="w-[22rem] sm:w-[23.5rem]"
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-xl">Select the Time: (24 hours wise)</label>
-          <input
-            type="time"
-            className="text-black w-[22rem] sm:w-[23.5rem] rounded-md py-1 outline-none border"
-            value={time}
-            onChange={(e) => setTime(String(e.target.value))}
-          />
-        </div>
-        <Button
-          type="submit"
-          className="w-[22rem] sm:w-[23.5rem] flex items-center gap-2"
+      <div className="flex flex-wrap w-full md:w-[90%] gap-4">
+        {defaultValue.map((item) => {
+          const isContains = selected.find((item2) => {
+            return (
+              (item2.startTime <= item.startTime &&
+                item.startTime < item2.endTime) ||
+              (item.endTime > item2.startTime && item.endTime < item2.endTime)
+            );
+          });
+
+          const isCurrentTime = selected.find(
+            (item2) => item2.startTime == item.startTime
+          );
+          return (
+            <button
+              disabled={isCurrentTime ? false : isContains ? true : false}
+              className={`${isContains && "cursor-not-allowed text-gray-400"} ${
+                isCurrentTime && "!bg-green-500 !cursor-pointer !text-black"
+              } px-2 py-1 rounded-md text-xl font-medium`}
+              onClick={() => {
+                addItemToSelected(item);
+              }}
+              key={item.startTime}
+            >
+              {item.startTime}
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex flex-col justify-center items-center">
+        <button
+          className={`px-4 py-2 bg-gray-300 shadow-lg rounded-md text-xl font-medium hover:bg-gray-400 transition-colors duration-300 ${
+            loading && "cursor-not-allowed"
+          }`}
+          onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? "Creating..." : `Create Slot`}
-        </Button>
-      </form>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+        <p>
+          <span className="font-semibold">Disclaimer: </span>
+          Only Click submit button when done with whole week slot avaiblability
+        </p>
+      </div>
     </div>
   );
 };
