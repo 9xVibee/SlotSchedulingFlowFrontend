@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useUserDetails } from "@/utils/store";
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 type time = {
   startTime: string;
@@ -182,6 +186,8 @@ const CreateSlot = () => {
       endTime: "18:00",
     },
   ]);
+  const navigate = useNavigate();
+  const { user } = useUserDetails();
 
   //! adding/removing item from selected
   const addItemToSelected = (item: time) => {
@@ -202,8 +208,25 @@ const CreateSlot = () => {
   };
 
   //! handle submit
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
+    try {
+      const res = await axios.post(
+        // "http://localhost:3000/api/physio/slots"
+        "https://slotschedulingflowbackend.onrender.com/api/physio/slots",
+        {
+          slot,
+          email: user.email,
+        }
+      );
+
+      setLoading(false);
+      toast(res?.data?.message);
+      navigate("/appointments");
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
   };
 
   return (

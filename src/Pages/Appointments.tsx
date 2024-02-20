@@ -5,12 +5,15 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Skeletons from "./Skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserDetails } from "@/utils/store";
+import axios from "axios";
 
 const Appointments = () => {
   const navigate = useNavigate();
   const [booked, setBooked] = useState(false);
+  const [isExist, setExist] = useState(false);
+
   const { user } = useUserDetails();
 
   const { loading, filteredSlots, getBookedSlots, getUnBookedSlots } =
@@ -20,12 +23,29 @@ const Appointments = () => {
   const redirectThePhysio = () => {
     const curDate = new Date();
 
-    if (curDate.getDay() == 1) navigate("/createslot");
+    if (curDate.getDay() == 2) navigate("/createslot");
     else
       toast("Slot can only be create on sunday", {
         position: "top-center",
       });
   };
+
+  const handleIsExist = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3000/api/physio/is-already-submitted"
+        // "https://slotschedulingflowbackend.onrender.com/api/physio/is-already-submitted"
+      );
+
+      setExist(res?.data?.isExist);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleIsExist();
+  }, []);
 
   // checking if the loged in user is physio or not!
   if (user.role != "physio" || !user.role) {
@@ -93,7 +113,9 @@ const Appointments = () => {
               Not-Booked
             </Button>
           </motion.div>
-          {<Button onClick={redirectThePhysio}>Slot Availability</Button>}
+          {!isExist && (
+            <Button onClick={redirectThePhysio}>Slot Availability</Button>
+          )}
         </div>
       </div>
 
