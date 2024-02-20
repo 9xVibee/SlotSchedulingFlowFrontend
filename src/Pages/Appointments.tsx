@@ -34,7 +34,7 @@ const Appointments = () => {
     try {
       const res = await axios.get(
         // "http://localhost:3000/api/physio/is-already-submitted"
-        "https://slotschedulingflowbackend.onrender.com/api/physio/is-already-submitted"
+        "https://slotschedulingflowbackend.onrender.com/api/physio/isalreadysubmitted"
       );
 
       setExist(res?.data?.isExist);
