@@ -148,9 +148,12 @@ const SlotScheduling = () => {
                       key={dayss.value}
                       value={dayss.value}
                       onSelect={(currentValue) => {
+                        handleDayChange(
+                          currentValue == day ? "" : currentValue,
+                          eve
+                        );
                         setDay(currentValue === day ? "" : currentValue);
                         setOpenDay(false);
-                        handleDayChange(currentValue);
                       }}
                     >
                       <Check
@@ -188,9 +191,12 @@ const SlotScheduling = () => {
                       key={eveMoods.value}
                       value={eveMoods.value}
                       onSelect={(currentValue) => {
+                        handleEveChange(
+                          currentValue == eve ? "" : currentValue,
+                          day
+                        );
                         setEve(currentValue === eve ? "" : currentValue);
                         setOpenEve(false);
-                        handleEveChange(currentValue);
                       }}
                     >
                       <Check

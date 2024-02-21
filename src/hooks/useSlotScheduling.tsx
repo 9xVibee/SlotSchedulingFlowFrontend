@@ -25,23 +25,55 @@ const useSlotScheduling = () => {
   };
 
   //! hanlding day change
-  const handleDayChange = (day: string) => {
-    const dayByFilteredSlots = slots.filter((slot) => slot.day == day);
-    setFilteredSlots(dayByFilteredSlots);
+  const handleDayChange = (day: string, filtermood: string) => {
+    console.log(day, filtermood);
+
+    if (filtermood !== "" || day !== "") {
+      const dayByFilteredSlots = slots.filter((slot) => {
+        return (
+          (slot.day == day || slot.day == "") &&
+          (filtermood == "" ||
+            (filtermood == "evening" &&
+              slot.slotStartTime <= "23:59" &&
+              slot.slotStartTime > "18:00") ||
+            (filtermood == "morning" &&
+              slot.slotStartTime >= "06:00" &&
+              slot.slotStartTime < "12:00") ||
+            (filtermood == "afternoon" &&
+              slot.slotStartTime >= "12:00" &&
+              slot.slotStartTime < "18:00"))
+        );
+      });
+      setFilteredSlots(dayByFilteredSlots);
+    } else setFilteredSlots(slots);
   };
 
   //! handling eve change
-  const handleEveChange = (filtereve: string) => {
-    const dayByFilteredSlots = slots.filter((slot) => {
-      if (filtereve == "evening") {
-        return slot.slotStartTime <= "23:59" && slot.slotStartTime > "18:00";
-      } else if (filtereve == "morning") {
-        return slot.slotStartTime >= "06:00" && slot.slotStartTime < "12:00";
-      } else if (filtereve == "afternoon") {
-        return slot.slotStartTime >= "12:00" && slot.slotStartTime < "18:00";
-      }
-    });
-    setFilteredSlots(dayByFilteredSlots);
+  const handleEveChange = (filtermood: string, day: string) => {
+    if (filtermood !== "" || day !== "") {
+      const dayByFilteredSlots = slots.filter((slot) => {
+        if (filtermood == "evening") {
+          return (
+            slot.slotStartTime <= "23:59" &&
+            slot.slotStartTime > "18:00" &&
+            (day !== "" || day == slot.day)
+          );
+        } else if (filtermood == "morning") {
+          return (
+            slot.slotStartTime >= "06:00" &&
+            slot.slotStartTime < "12:00" &&
+            (day === "" || day == slot.day)
+          );
+        } else if (filtermood == "afternoon") {
+          return (
+            slot.slotStartTime >= "12:00" &&
+            slot.slotStartTime < "18:00" &&
+            (day === "" || day == slot.day)
+          );
+        }
+      });
+      setFilteredSlots(dayByFilteredSlots);
+    } else setFilteredSlots(slots);
   };
 
   return {
