@@ -22,8 +22,8 @@ type AvailabelSlots = {
   physioName: string;
   isAllocated: boolean;
   _id: string;
-  slotAllocationLoading: boolean;
-  handleSlotAllocation: (_id: string, remark: string) => void;
+  slotAllocationLoading?: boolean;
+  handleSlotAllocation?: (_id: string, remark: string) => void;
 };
 
 const AvailabelSlot = ({
@@ -80,7 +80,10 @@ const AvailabelSlot = ({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogAction
-                  onClick={() => handleSlotAllocation(_id, remarks)}
+                  onClick={() => {
+                    if (handleSlotAllocation)
+                      handleSlotAllocation(_id, remarks);
+                  }}
                 >
                   Submit
                 </AlertDialogAction>

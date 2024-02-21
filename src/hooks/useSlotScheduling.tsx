@@ -19,7 +19,7 @@ const useSlotScheduling = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        "https://slotschedulingflowbackend.onrender.com/api/slots"
+        "https://slotschedulingflowbackend-production-ce74.up.railway.app/api/slots"
       );
 
       setLoading(false);
@@ -99,11 +99,12 @@ const useSlotScheduling = () => {
     setSlots(updatedSlots);
     setFilteredSlots(updatedSlots);
   };
+
   const handleSlotAllocation = async (_id: string, remark: string) => {
     try {
       setSlotAllocationLoading(true);
       const res = await axios.post(
-        `https://slotschedulingflowbackend.onrender.com/api/admin/slot/${_id}`,
+        `https://slotschedulingflowbackend-production-ce74.up.railway.app/api/admin/slot/${_id}`,
         {
           remark,
         }

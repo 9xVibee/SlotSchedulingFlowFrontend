@@ -213,7 +213,7 @@ const CreateSlot = () => {
     try {
       const res = await axios.post(
         // "http://localhost:3000/api/physio/slots"
-        "https://slotschedulingflowbackend.onrender.com/api/physio/slots",
+        "https://slotschedulingflowbackend-production-ce74.up.railway.app/api/physio/slots",
         {
           slot,
           email: user.email,

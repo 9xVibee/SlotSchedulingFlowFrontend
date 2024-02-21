@@ -17,7 +17,7 @@ const useBookUnBookSlots = () => {
     try {
       const res = await axios.post(
         // "http://localhost:3000/api/physio/getallslots",
-        "https://slotschedulingflowbackend.onrender.com/api/physio/getallslots",
+        "https://slotschedulingflowbackend-production-ce74.up.railway.app/api/physio/getallslots",
         {
           email: user.email,
         }
