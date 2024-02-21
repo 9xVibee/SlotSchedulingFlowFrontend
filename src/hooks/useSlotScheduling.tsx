@@ -78,12 +78,26 @@ const useSlotScheduling = () => {
     } else setFilteredSlots(slots);
   };
 
+  //! handle slots after allocation
+  const handleSlots = (_id: string, remark: string) => {
+    const updatedSlots = filteredSlots.map((slot) => {
+      if (slot._id == _id) {
+        slot.isAllocated = true;
+        slot.remark = remark;
+      }
+      return slot;
+    });
+    setSlots(updatedSlots);
+    setFilteredSlots(updatedSlots);
+  };
+
   return {
     filteredSlots,
     loading,
     getAllSlots,
     handleDayChange,
     handleEveChange,
+    handleSlots,
   };
 };
 
