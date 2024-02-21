@@ -52,7 +52,9 @@ const useSlotScheduling = () => {
   const handleEveChange = (filtermood: string, day: string) => {
     if (filtermood !== "" || day !== "") {
       const dayByFilteredSlots = slots.filter((slot) => {
-        if (filtermood == "evening") {
+        if (filtermood == "" && day == slot.day) {
+          return true;
+        } else if (filtermood == "evening") {
           return (
             slot.slotStartTime <= "23:59" &&
             slot.slotStartTime > "18:00" &&
