@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from "framer-motion";
-import * as React from "react";
+import { useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -61,10 +62,6 @@ const eveMood = [
 ];
 
 const SlotScheduling = () => {
-  const [openDay, setOpenDay] = React.useState(false);
-  const [openEve, setOpenEve] = React.useState(false);
-  const [day, setDay] = React.useState("");
-  const [eve, setEve] = React.useState("");
   const { user } = useUserDetails();
   const navigate = useNavigate();
 
@@ -74,9 +71,19 @@ const SlotScheduling = () => {
     getAllSlots,
     handleDayChange,
     handleEveChange,
+    day,
+    eve,
+    openDay,
+    openEve,
+    setDay,
+    setEve,
+    setOpenDay,
+    setOpenEve,
+    slotAllocationLoading,
+    handleSlotAllocation,
   } = useSlotScheduling();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllSlots();
   }, []);
 
@@ -231,7 +238,7 @@ const SlotScheduling = () => {
         }}
         className="w-full flex flex-col overflow-y-scroll h-3/4 gap-4 py-2 hideScrollBar"
       >
-        {filteredSlots.map((slot, idx) => {
+        {filteredSlots?.map((slot, idx) => {
           if (loading) return <Skeletons />;
           else if (user.role == "patient" && slot.isAllocated) return null;
           else
@@ -245,10 +252,12 @@ const SlotScheduling = () => {
                 remark={slot.remark}
                 isAllocated={slot.isAllocated}
                 key={idx}
+                slotAllocationLoading={slotAllocationLoading}
+                handleSlotAllocation={handleSlotAllocation}
               />
             );
         })}
-        {filteredSlots.filter((item) => item.isAllocated == false).length ==
+        {filteredSlots?.filter((item) => item.isAllocated == false).length ==
           0 &&
           user.role == "patient" && (
             <p className="text-center text-xl">No slots available</p>

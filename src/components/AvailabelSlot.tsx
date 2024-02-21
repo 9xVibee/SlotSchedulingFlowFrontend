@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
-import useSlotAllocation from "@/hooks/useSlotAllocation";
 
 type AvailabelSlots = {
   time: string;
@@ -23,6 +22,8 @@ type AvailabelSlots = {
   physioName: string;
   isAllocated: boolean;
   _id: string;
+  slotAllocationLoading: boolean;
+  handleSlotAllocation: (_id: string, remark: string) => void;
 };
 
 const AvailabelSlot = ({
@@ -33,9 +34,10 @@ const AvailabelSlot = ({
   physioName,
   isAllocated,
   _id,
+  slotAllocationLoading,
+  handleSlotAllocation,
 }: AvailabelSlots) => {
   const [remarks, setRemarks] = useState("");
-  const { handleSlotAllocation, loading } = useSlotAllocation();
 
   return (
     <div className="w-full flex justify-between items-center border rounded-md p-2">
@@ -61,7 +63,7 @@ const AvailabelSlot = ({
             <AlertDialogTrigger asChild>
               <Button
                 className="flex items-center justify-center gap-2"
-                disabled={loading}
+                disabled={slotAllocationLoading}
               >
                 Allocate Slot <BellPlus className="size-5 mt-1" />
               </Button>

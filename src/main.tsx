@@ -7,10 +7,10 @@ import appRouter from "./App.tsx";
 import { Toaster } from "@/components/ui/sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Toaster />
-      <RouterProvider router={appRouter} />
-    </ThemeProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <Toaster />
+    <RouterProvider router={appRouter} />
+  </ThemeProvider>
+  // </React.StrictMode>
 );
